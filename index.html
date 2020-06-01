@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="sirdaniel711" />
+    <meta name="revised" content="5/28/2020" />
+    <meta name="description" content="My first calculator in JavaScript" />
+    <meta name="keywords" content="sirdaniel711, Calculator" />
+    <title>Mason's JS Calculator</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <section class="calc"> <!-- Need a parent container to use as a single listener for all of the buttons -->
+        <header class="header-row">
+            <h1 class="header-title width text">JavaScript Calculator</h1>
+        </header>
+        <section class="display-row">
+            <h2 class="display width">0</h2>
+        </section>
+        <section class="button-row">
+            <button class="button half-width text">C</button>
+            <button class="button quarter-width text">←</button>
+            <button class="button quarter-width text">÷</button>
+        </section>
+        <section class="button-row">
+            <button class="button quarter-width text">7</button>
+            <button class="button quarter-width text">8</button>
+            <button class="button quarter-width text">9</button>
+            <button class="button quarter-width text">×</button>
+        </section>
+        <section class="button-row">
+            <button class="button quarter-width text">4</button>
+            <button class="button quarter-width text">5</button>
+            <button class="button quarter-width text">6</button>
+            <button class="button quarter-width text">-</button>
+        </section>
+        <section class="button-row">
+            <button class="button quarter-width text">1</button>
+            <button class="button quarter-width text">2</button>
+            <button class="button quarter-width text">3</button>
+            <button class="button quarter-width text">+</button>
+        </section>
+        <section class="button-row">
+            <button class="button three-quarter-width text last">0</button>
+            <button class="button quarter-width text last">=</button>
+        </section>
+        <section class="footer-row">
+            <h3 class="footer-note width">*Note: Currently only supports whole numbers.<br />*Note: There is currently no limit set to the number of digits.</h3>
+            <h3 class="footer-info width">sirdaniel711</h3>
+            <h3 class="footer-info width">Version 1.0</h3>
+        </section>
+        <script src="./calculator.js"></script>
+    </section>
+</body>
+</html>

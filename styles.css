@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(255, 255, 255);
+}
+
+.header-row {
+    display: flex;
+    justify-content: center;
+}
+
+.header-title {
+    font-family: "Snell Roundhand";
+    font-weight: normal;
+    font-size: 40;
+    text-align: center;
+}
+
+.display-row {
+    display: flex;
+    justify-content: center;
+}
+
+.display {
+    font-size: 40px;
+    font-family: monospace;
+    font-weight: normal;
+    text-align: right;
+    padding: 15px 10px;
+    margin: 0px;
+    background-color: black;
+    color: white;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    font-weight: bold;
+    text-align: center;
+    height: 100px;
+    background-color: rgb(202, 202, 202);
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: rgb(222, 222, 222);
+}
+
+.button:active {
+    background-color: rgb(182, 182, 182);
+}
+
+.button:last-child {
+    background-color: rgb(214, 143, 11);
+    color: white;
+    border-right: 0px;
+}
+
+.button:last-child:hover {
+    background-color: rgb(222, 160, 46);
+}
+
+.button:last-child:active {
+    background-color: rgb(206, 126, 0);
+}
+
+.button:first-child {
+    border-left: 0px;
+}
+
+.last {
+    border-bottom: 0px;
+}
+
+.footer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-note {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: normal;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-info {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: normal;
+    font-size: 13px;
+    text-align: right;
+    margin: 0px;
+}
+
+.text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+}
+
+.width {
+    width: 400px;
+}
+
+.three-quarter-width {
+    width: 300px;
+}
+
+.half-width {
+    width: 200px;
+}
+
+.quarter-width {
+    width: 100px;
+}
