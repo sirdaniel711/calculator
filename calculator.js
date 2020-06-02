@@ -1,14 +1,15 @@
-// JavaScript calculator version 1.1
+// JavaScript calculator version 1.3
 // By: sirdaniel711
 // Linked files: index.html, styles.css
-// Note: Does not currently support decimal numbers, only whole numbers for now
-// Note: Could add a limit to the number of digits (maybe 16)
 // To do:
 // Improve the layout of the code and make it more readable
-// Put a limit to the number of digits
-// Maybe add a decimal and negative/positive button, as well as adding support for decimal numbers
+// Maybe add a decimal and negative/positive button
+// Add the ability for repeated "=" clicks to reapply the current operation
+// Add support for scientific/exponential notation, along with an exponential button
+// Needs more testing with negative numbers
 // And more
 
+const DIGIT_LIMIT = 15;
 const button = document.querySelector('.button');
 let output = document.querySelector('.display');
 let output2 = document.querySelector('.display-operator');
@@ -24,8 +25,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 1;
             }
             else {
-                currentNumber = (currentNumber * 10) + 1;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 1;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "2":
@@ -34,8 +37,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 2;
             }
             else {
-                currentNumber = (currentNumber * 10) + 2;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 2;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "3":
@@ -44,8 +49,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 3;
             }
             else {
-                currentNumber = (currentNumber * 10) + 3;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 3;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "4":
@@ -54,8 +61,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 4;
             }
             else {
-                currentNumber = (currentNumber * 10) + 4;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 4;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "5":
@@ -64,8 +73,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 5;
             }
             else {
-                currentNumber = (currentNumber * 10) + 5;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 5;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "6":
@@ -74,8 +85,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 6;
             }
             else {
-                currentNumber = (currentNumber * 10) + 6;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 6;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "7":
@@ -84,8 +97,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 7;
             }
             else {
-                currentNumber = (currentNumber * 10) + 7;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 7;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "8": 
@@ -94,8 +109,10 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 8;
             }
             else {
-                currentNumber = (currentNumber * 10) + 8;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 8;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "9":
@@ -104,14 +121,18 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 output.innerText = 9;
             }
             else {
-                currentNumber = (currentNumber * 10) + 9;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = (currentNumber * 10) + 9;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "0":
             if (currentNumber !== 0) {
-                currentNumber = currentNumber * 10;
-                output.innerText = currentNumber;
+                if((`${currentNumber}`).length < DIGIT_LIMIT) {
+                    currentNumber = currentNumber * 10;
+                    output.innerText = currentNumber;
+                }
             }
             break;
         case "C":
@@ -124,51 +145,102 @@ document.querySelector('.calc').addEventListener('click', function(event) {
         case "+":
             if (currentNumber !== 0) {
                 savedNumber = perform();
-                currentNumber = 0;
-                operator = "+";
-                output.innerText = savedNumber;
+                if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
+                    displayOverflow();
+                } else {
+                    if ((`${savedNumber}`).length > DIGIT_LIMIT) {
+                        if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
+                        } else {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
+                        }
+                    }
+                    currentNumber = 0;
+                    operator = "+";
+                    output.innerText = savedNumber;
+                    output2.innerText = "+";
+                }
             } else {
                 if (operator !== "") {
                     operator = "+";
-                }  
+                    output2.innerText = "+";
+                }
             }
-            output2.innerText = "+";
             break;
         case "-":
             if (currentNumber !== 0) {
                 savedNumber = perform();
-                currentNumber = 0;
-                operator = "-";
+                if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
+                    displayOverflow();
+                } else {
+                    if ((`${savedNumber}`).length > DIGIT_LIMIT) {
+                        if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
+                        } else {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
+                        }
+                    }
+                    currentNumber = 0;
+                    operator = "-";
+                    output.innerText = savedNumber;
+                    output2.innerText = "-";
+                }
             } else {
                 if (operator !== "") {
                     operator = "-";
+                    output2.innerText = "-";
                 }
             }
-            output2.innerText = "-";
             break;
         case "×":
             if (currentNumber !== 0) {
                 savedNumber = perform();
-                currentNumber = 0;
-                operator = "*";
+                if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
+                    displayOverflow();
+                } else {
+                    if ((`${savedNumber}`).length > DIGIT_LIMIT) {
+                        if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
+                        } else {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
+                        }
+                    }
+                    currentNumber = 0;
+                    operator = "*";
+                    output.innerText = savedNumber;
+                    output2.innerText = "×";
+                }
             } else {
                 if (operator !== "") {
                     operator = "*";
+                    output2.innerText = "×";
                 }
             }
-            output2.innerText = "×";
             break;
         case "÷":
             if (currentNumber !== 0) {
                 savedNumber = perform();
-                currentNumber = 0;
-                operator = "/";
+                if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
+                    displayOverflow();
+                } else {
+                    if ((`${savedNumber}`).length > DIGIT_LIMIT) {
+                        if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
+                        } else {
+                            savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
+                        }
+                    }
+                    currentNumber = 0;
+                    operator = "/";
+                    output.innerText = savedNumber;
+                    output2.innerText = "÷";
+                }
             } else {
                 if (operator !== "") {
                     operator = "/";
+                    output2.innerText = "÷";
                 }
             }
-            output2.innerText = "÷";
             break;
         case "←":
             if ((currentNumber > 0 && currentNumber < 10) || (currentNumber < 0 && currentNumber > -10)) {
@@ -183,10 +255,28 @@ document.querySelector('.calc').addEventListener('click', function(event) {
         default: // case "="
             if (operator !== "") {
                 currentNumber = perform();
-                savedNumber = 0;
-                operator = "";
-                output.innerText = currentNumber;
-                output2.innerText = "";
+                console.log(`${currentNumber}`);
+                console.log((`${currentNumber}`).indexOf(`.`));
+                console.log((`${currentNumber}`).length);
+                console.log((`${currentNumber}`).length > DIGIT_LIMIT);
+                console.log((`${currentNumber}`).indexOf(`.`) < 1 || (`${currentNumber}`).indexOf(`.`) >= DIGIT_LIMIT);
+                console.log(currentNumber.toPrecision(DIGIT_LIMIT - 1));
+                console.log(currentNumber.toPrecision(DIGIT_LIMIT));
+                if ((`${currentNumber}`).length > DIGIT_LIMIT && ((`${currentNumber}`).indexOf(`.`) < 1 || (`${currentNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
+                    displayOverflow();
+                } else {
+                    if ((`${currentNumber}`).length > DIGIT_LIMIT) {
+                        if ((`${currentNumber}`).indexOf(`.`) >= 1 && (`${currentNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
+                            currentNumber = parseFloat(currentNumber.toPrecision(DIGIT_LIMIT - 1));
+                        } else {
+                            currentNumber = parseFloat(currentNumber.toPrecision(DIGIT_LIMIT));
+                        }
+                    }
+                    savedNumber = 0;
+                    operator = "";
+                    output.innerText = currentNumber;
+                    output2.innerText = "";
+                }
             }
             break;
         }
@@ -203,7 +293,7 @@ function perform() {
             result = savedNumber * currentNumber;
             break;
         case "/":
-            result = Math.floor(savedNumber / currentNumber); // No need to worry about divide by 0 error here yet. Currently, this function will not be called unless currentNumber !== 0
+            result = savedNumber / currentNumber; // No need to worry about divide by 0 error here yet. Currently, this function will not be called unless currentNumber !== 0
             break;
         default:
             result = savedNumber + currentNumber; // Works for both case "+" and case ""
@@ -212,7 +302,18 @@ function perform() {
     return result;
 }
 
+function displayOverflow() {
+    currentNumber = 0;
+    savedNumber = 0;
+    operator = "";
+    output.innerText = "*Overflow*";
+    output2.innerText = "";
+}
+
 // Version 1.0
 // *Initial version
 // Version 1.1
 // *Added a mini-display for the current operator
+// Version 1.3
+// *Added support for decimal numbers (still need to add a decimal button)
+// *Added a limit to the number of digits to fit in the display (does not currently support scientific/exponential notation)
