@@ -1,17 +1,17 @@
-// JavaScript calculator version 1.0
+// JavaScript calculator version 1.1
 // By: sirdaniel711
 // Linked files: index.html, styles.css
 // Note: Does not currently support decimal numbers, only whole numbers for now
 // Note: Could add a limit to the number of digits (maybe 16)
 // To do:
-// Make it more efficient
+// Improve the layout of the code and make it more readable
 // Put a limit to the number of digits
 // Maybe add a decimal and negative/positive button, as well as adding support for decimal numbers
-// Add a minor display that shows the current operand
 // And more
 
 const button = document.querySelector('.button');
 let output = document.querySelector('.display');
+let output2 = document.querySelector('.display-operator');
 let currentNumber = 0;
 let savedNumber = 0;
 let operator = "";
@@ -119,6 +119,7 @@ document.querySelector('.calc').addEventListener('click', function(event) {
             savedNumber = 0;
             operator = "";
             output.innerText = 0;
+            output2.innerText = "";
             break;
         case "+":
             if (currentNumber !== 0) {
@@ -129,8 +130,9 @@ document.querySelector('.calc').addEventListener('click', function(event) {
             } else {
                 if (operator !== "") {
                     operator = "+";
-                }
+                }  
             }
+            output2.innerText = "+";
             break;
         case "-":
             if (currentNumber !== 0) {
@@ -142,6 +144,7 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                     operator = "-";
                 }
             }
+            output2.innerText = "-";
             break;
         case "×":
             if (currentNumber !== 0) {
@@ -153,6 +156,7 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                     operator = "*";
                 }
             }
+            output2.innerText = "×";
             break;
         case "÷":
             if (currentNumber !== 0) {
@@ -164,6 +168,7 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                     operator = "/";
                 }
             }
+            output2.innerText = "÷";
             break;
         case "←":
             if ((currentNumber > 0 && currentNumber < 10) || (currentNumber < 0 && currentNumber > -10)) {
@@ -181,6 +186,7 @@ document.querySelector('.calc').addEventListener('click', function(event) {
                 savedNumber = 0;
                 operator = "";
                 output.innerText = currentNumber;
+                output2.innerText = "";
             }
             break;
         }
@@ -197,7 +203,7 @@ function perform() {
             result = savedNumber * currentNumber;
             break;
         case "/":
-            result = Math.floor(savedNumber / currentNumber); // No need to worry about divide by 0 error here, since currently this function will not be called unless currentNumber !== 0
+            result = Math.floor(savedNumber / currentNumber); // No need to worry about divide by 0 error here yet. Currently, this function will not be called unless currentNumber !== 0
             break;
         default:
             result = savedNumber + currentNumber; // Works for both case "+" and case ""
@@ -205,3 +211,8 @@ function perform() {
     }
     return result;
 }
+
+// Version 1.0
+// *Initial version
+// Version 1.1
+// *Added a mini-display for the current operator
