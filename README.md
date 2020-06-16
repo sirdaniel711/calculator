@@ -1,6 +1,6 @@
 # JavaScript Calculator Project (version 1.3)
 
-This is a JavaScript calculator project for the Frontend Masters course [Intro to Web Development](https://bthold.github.io/intro-to-web-dev-v2/)
+This is a JavaScript calculator project for the Frontend Masters course [Intro to Web Development](https://bthold.github.io/intro-to-web-dev-v2/).
 
 **[Try the calculator here](https://sirdaniel711.github.io/calculator/)**
 
