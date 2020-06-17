@@ -10,7 +10,6 @@
 // And more
 
 const DIGIT_LIMIT = 15;
-const button = document.querySelector('.button');
 let output = document.querySelector('.display');
 let output2 = document.querySelector('.display-operator');
 let currentNumber = 0;
@@ -255,13 +254,6 @@ document.querySelector('.calc').addEventListener('click', function(event) {
         default: // case "="
             if (operator !== "") {
                 currentNumber = perform();
-                console.log(`${currentNumber}`);
-                console.log((`${currentNumber}`).indexOf(`.`));
-                console.log((`${currentNumber}`).length);
-                console.log((`${currentNumber}`).length > DIGIT_LIMIT);
-                console.log((`${currentNumber}`).indexOf(`.`) < 1 || (`${currentNumber}`).indexOf(`.`) >= DIGIT_LIMIT);
-                console.log(currentNumber.toPrecision(DIGIT_LIMIT - 1));
-                console.log(currentNumber.toPrecision(DIGIT_LIMIT));
                 if ((`${currentNumber}`).length > DIGIT_LIMIT && ((`${currentNumber}`).indexOf(`.`) < 1 || (`${currentNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
                     displayOverflow();
                 } else {
