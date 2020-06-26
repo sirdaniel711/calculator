@@ -15,7 +15,14 @@ let output2 = document.querySelector('.display-operator');
 let currentNumber = 0;
 let savedNumber = 0;
 let operator = "";
-document.querySelector('.calc').addEventListener('click', function(event) {
+document.querySelector('.calc').addEventListener('click', action);
+document.querySelector('.calc').addEventListener('keydown', logKey);
+
+function logKey(event) {
+    console.log(event);
+}
+
+function action(event) {
     if (event.target.tagName === 'BUTTON') {
         switch(event.target.innerText) {
         case "1":
