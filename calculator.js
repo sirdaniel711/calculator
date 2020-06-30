@@ -1,8 +1,7 @@
-// JavaScript calculator version 1.4
+// JavaScript calculator version 1.5
 // By: sirdaniel711
 // Linked files: index.html, styles.css
 // To do:
-// Improve the layout of the code and make it more readable
 // Maybe add a decimal and negative/positive button
 // Add the ability for repeated "=" clicks to reapply the current operation
 // Add support for scientific/exponential notation, along with an exponential button
@@ -10,17 +9,16 @@
 // And more
 
 const DIGIT_LIMIT = 15;
-let output = document.querySelector('.display');
-let output2 = document.querySelector('.display-operator');
-let currentNumber = 0;
-let savedNumber = 0;
-let operator = "";
+let screen = document.querySelector('.display');
+let operatorScreen = document.querySelector('.display-operator');
+let currentNumber = "0";
+let savedNumber = "0";
+let currentOperator = "";
 document.querySelector('.calc').addEventListener('click', buttonListener);
-document.addEventListener('keydown', keyListener);
+document.addEventListener('keydown', convertKeyboardInput);
 
-function keyListener(event) {
-    console.log(event);
-    let request = event.key;
+function convertKeyboardInput(event) {
+    var request = event.key;
     switch(request) {
         case "Backspace":
             request = "←";
@@ -31,299 +29,146 @@ function keyListener(event) {
         case "/":
             request = "÷";
             break;
+        case "Enter":
+            request = "=";
+            break;
+        case "c":
+            request = "C";
+            break;
     }
-    action(request);
+    if (isNaN(parseInt(request))) {
+        handleSymbol(request);
+    } else {
+        handleNumber(request);
+    }
 }
 
 function buttonListener(event) {
     if (event.target.tagName === 'BUTTON') {
-        action(event.target.innerText);
+        var request = event.target.innerText;
+        if (isNaN(parseInt(request))) {
+            handleSymbol(request);
+        } else {
+            handleNumber(request);
+        }
     }
 }
 
-function action(eventText) {
-    switch(eventText) {
-    case "1":
-        if (currentNumber === 0) {
-            currentNumber = 1;
-            output.innerText = 1;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 1;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "2":
-        if (currentNumber === 0) {
-            currentNumber = 2;
-            output.innerText = 2;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 2;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "3":
-        if (currentNumber === 0) {
-            currentNumber = 3;
-            output.innerText = 3;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 3;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "4":
-        if (currentNumber === 0) {
-            currentNumber = 4;
-            output.innerText = 4;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 4;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "5":
-        if (currentNumber === 0) {
-            currentNumber = 5;
-            output.innerText = 5;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 5;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "6":
-        if (currentNumber === 0) {
-            currentNumber = 6;
-            output.innerText = 6;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 6;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "7":
-        if (currentNumber === 0) {
-            currentNumber = 7;
-            output.innerText = 7;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 7;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "8": 
-        if (currentNumber === 0) {
-            currentNumber = 8;
-            output.innerText = 8;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 8;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "9":
-        if (currentNumber === 0) {
-            currentNumber = 9;
-            output.innerText = 9;
-        }
-        else {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = (currentNumber * 10) + 9;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "0":
-        if (currentNumber !== 0) {
-            if((`${currentNumber}`).length < DIGIT_LIMIT) {
-                currentNumber = currentNumber * 10;
-                output.innerText = currentNumber;
-            }
-        }
-        break;
-    case "C":
-        currentNumber = 0;
-        savedNumber = 0;
-        operator = "";
-        output.innerText = 0;
-        output2.innerText = "";
-        break;
-    case "+":
-        if (currentNumber !== 0) {
-            savedNumber = perform();
-            if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
-                displayOverflow();
-            } else {
-                if ((`${savedNumber}`).length > DIGIT_LIMIT) {
-                    if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
-                    } else {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
-                    }
-                }
-                currentNumber = 0;
-                operator = "+";
-                output.innerText = savedNumber;
-                output2.innerText = "+";
-            }
+function handleNumber(digit) {
+    if (currentNumber.length < DIGIT_LIMIT) {
+        if (currentNumber === "0") {
+            currentNumber = digit;
         } else {
-            if (operator !== "") {
-                operator = "+";
-                output2.innerText = "+";
-            }
+            currentNumber += digit;
         }
-        break;
-    case "-":
-        if (currentNumber !== 0) {
-            savedNumber = perform();
-            if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
-                displayOverflow();
-            } else {
-                if ((`${savedNumber}`).length > DIGIT_LIMIT) {
-                    if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
-                    } else {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
-                    }
-                }
-                currentNumber = 0;
-                operator = "-";
-                output.innerText = savedNumber;
-                output2.innerText = "-";
-            }
-        } else {
-            if (operator !== "") {
-                operator = "-";
-                output2.innerText = "-";
-            }
-        }
-        break;
-    case "×":
-        if (currentNumber !== 0) {
-            savedNumber = perform();
-            if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
-                displayOverflow();
-            } else {
-                if ((`${savedNumber}`).length > DIGIT_LIMIT) {
-                    if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
-                    } else {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
-                    }
-                }
-                currentNumber = 0;
-                operator = "*";
-                output.innerText = savedNumber;
-                output2.innerText = "×";
-            }
-        } else {
-            if (operator !== "") {
-                operator = "*";
-                output2.innerText = "×";
-            }
-        }
-        break;
-    case "÷":
-        if (currentNumber !== 0) {
-            savedNumber = perform();
-            if ((`${savedNumber}`).length > DIGIT_LIMIT && ((`${savedNumber}`).indexOf(`.`) < 1 || (`${savedNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
-                displayOverflow();
-            } else {
-                if ((`${savedNumber}`).length > DIGIT_LIMIT) {
-                    if ((`${savedNumber}`).indexOf(`.`) >= 1 && (`${savedNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT - 1));
-                    } else {
-                        savedNumber = parseFloat(savedNumber.toPrecision(DIGIT_LIMIT));
-                    }
-                }
-                currentNumber = 0;
-                operator = "/";
-                output.innerText = savedNumber;
-                output2.innerText = "÷";
-            }
-        } else {
-            if (operator !== "") {
-                operator = "/";
-                output2.innerText = "÷";
-            }
-        }
-        break;
-    case "←":
-        if ((currentNumber > 0 && currentNumber < 10) || (currentNumber < 0 && currentNumber > -10)) {
-            currentNumber = 0;
-            output.innerText = currentNumber;
-        }
-        if (currentNumber > 9 || currentNumber < -9) {
-            currentNumber = Math.floor(currentNumber / 10);
-            output.innerText = currentNumber;
-        }
-        break;
-    default: // case "="
-        if (operator !== "") {
-            currentNumber = perform();
-            if ((`${currentNumber}`).length > DIGIT_LIMIT && ((`${currentNumber}`).indexOf(`.`) < 1 || (`${currentNumber}`).indexOf(`.`) >= DIGIT_LIMIT)) {
-                displayOverflow();
-            } else {
-                if ((`${currentNumber}`).length > DIGIT_LIMIT) {
-                    if ((`${currentNumber}`).indexOf(`.`) >= 1 && (`${currentNumber}`).indexOf(`.`) < DIGIT_LIMIT) {
-                        currentNumber = parseFloat(currentNumber.toPrecision(DIGIT_LIMIT - 1));
-                    } else {
-                        currentNumber = parseFloat(currentNumber.toPrecision(DIGIT_LIMIT));
-                    }
-                }
-                savedNumber = 0;
-                operator = "";
-                output.innerText = currentNumber;
-                output2.innerText = "";
-            }
-        }
-        break;
+        updateDisplay(currentNumber);
     }
-};
+}
 
-function perform() {
-    let result = 0;
-    switch(operator) {
+function handleSymbol(symbol) {
+    switch(symbol) {
+        case "C":
+            currentNumber = "0";
+            savedNumber = "0";
+            currentOperator = "";
+            updateDisplay(currentNumber);
+            updateOperatorDisplay();
+            break;
+        case "←":
+            let number = parseFloat(currentNumber);
+            if (currentNumber.length <= 2 && ((number > 0 && number < 10) || (number < 0 && number > -10))) {
+                currentNumber = "0";
+            } 
+            if (currentNumber.length > 2 || number >= 10) {
+                currentNumber = currentNumber.substring(0, currentNumber.length - 1);
+            }
+            updateDisplay(currentNumber);
+            break;
+        case "=":
+            if (currentOperator !== "" ) {
+                currentNumber = performOperation();
+                savedNumber = "0";
+                currentOperator = "";
+                updateDisplay(currentNumber);
+                updateOperatorDisplay();
+            }
+            break;
+        default: // default here means the case is an operator
+            handleOperator(symbol);
+            break;
+    }
+}
+
+function handleOperator(operator) {
+    if (operator === "+" || operator === "-" || operator === "×" || operator === "÷") {
+        if (parseFloat(currentNumber) !== 0) {
+            savedNumber = performOperation();
+            currentNumber = "0";
+            currentOperator = operator;
+            updateDisplay(savedNumber);
+            updateOperatorDisplay();
+        } else {
+            if (currentOperator !== "") {
+                currentOperator = operator;
+                updateOperatorDisplay();
+            }
+        }
+    }
+}
+
+function performOperation() {
+    let result = "0";
+    switch(currentOperator) {
         case "-":
-            result = savedNumber - currentNumber;
+            result = (parseFloat(savedNumber) - parseFloat(currentNumber)).toString();
             break;
-        case "*":
-            result = savedNumber * currentNumber;
+        case "×":
+            result = (parseFloat(savedNumber) * parseFloat(currentNumber)).toString();
             break;
-        case "/":
-            result = savedNumber / currentNumber; // No need to worry about divide by 0 error here yet. Currently, this function will not be called unless currentNumber !== 0
+        case "÷":
+            if (parseFloat(currentNumber) == 0) {
+                result = "DivideByZero";
+            } else {
+                result = (parseFloat(savedNumber) / parseFloat(currentNumber)).toString();
+            }
             break;
         default:
-            result = savedNumber + currentNumber; // Works for both case "+" and case ""
+            result = (parseFloat(savedNumber) + parseFloat(currentNumber)).toString();
             break;
     }
     return result;
 }
 
-function displayOverflow() {
-    currentNumber = 0;
-    savedNumber = 0;
-    operator = "";
-    output.innerText = "*Overflow*";
-    output2.innerText = "";
+function updateDisplay(numberToDisplay) {
+    if (numberToDisplay.length >= DIGIT_LIMIT) {
+        if (numberToDisplay.indexOf('.') >= DIGIT_LIMIT || numberToDisplay.includes('e') || !numberToDisplay.includes('.')) {
+            displayError("Overflow");
+        } else {
+            numberToDisplay = (parseFloat(numberToDisplay).toPrecision(DIGIT_LIMIT - 1)).toString();
+            screen.innerText = numberToDisplay;
+            if (currentOperator === "") {
+                currentNumber = numberToDisplay;
+            } else {
+                savedNumber = numberToDisplay;
+            }
+        }
+    } else if (numberToDisplay.includes("DivideByZero")) {
+        displayError("DivideByZero");
+    } else {
+        screen.innerText = numberToDisplay;
+    }
+}
+
+function updateOperatorDisplay() {
+    operatorScreen.innerText = currentOperator;
+}
+
+function displayError(message) {
+    currentNumber = "0";
+    savedNumber = "0";
+    currentOperator = "";
+    screen.innerText = "*" + message + "*";
+    operatorScreen.innerText = "";
 }
 
 // Version 1.0
@@ -335,3 +180,10 @@ function displayOverflow() {
 // *Added a limit to the number of digits to fit in the display (does not currently support scientific/exponential notation)
 // Version 1.4
 // *Added keyboard support as an input option
+// Version 1.5
+// *Improved the layout of the code to make it a little more readable and efficient
+// *Added extra keyboard support for enter and lower case c
+// *Fixed a few bugs, including:
+//   -Dividing by 0 would cause the result to be infinity
+//   -The overflow error message would not display for full numbers that are too large to fit on the display
+//   -Hitting backspace or the back button on a decimal number would make it 0 instead of removing the last digit
