@@ -103,7 +103,6 @@ function handleSymbol(symbol) {
             }
             break;
         case "=":
-            console.log("=");
             if (currentOperator !== "" ) {
                 currentNumber = performOperation();
                 savedNumber = "0";
