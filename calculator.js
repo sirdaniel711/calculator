@@ -1,12 +1,12 @@
-// JavaScript calculator version 1.5
+// JavaScript calculator version 1.6
 // By: sirdaniel711
 // Linked files: index.html, styles.css
 // To do:
-// Maybe add a decimal and negative/positive button
 // Add the ability for repeated "=" clicks to reapply the current operation
 // Add support for scientific/exponential notation, along with an exponential button
-// Needs more testing with negative numbers
 // And more
+// Note: When pressing enter on the keyboard, if one of the buttons are currently in focus (such as from clicking on a button), then double input will occur (keyboard and focused button).
+// Note: The modulus button is currently using the symbol normally used for a percentage button (%). Normally, the symbol for a modulus button is (mod).
 
 const DIGIT_LIMIT = 15;
 let screen = document.querySelector('.display');
@@ -36,6 +36,7 @@ function convertKeyboardInput(event) {
             request = "C";
             break;
     }
+    screen.focus();
     if (isNaN(parseInt(request))) {
         handleSymbol(request);
     } else {
@@ -76,15 +77,33 @@ function handleSymbol(symbol) {
             break;
         case "←":
             let number = parseFloat(currentNumber);
-            if (currentNumber.length <= 2 && ((number > 0 && number < 10) || (number < 0 && number > -10))) {
-                currentNumber = "0";
-            } 
-            if (currentNumber.length > 2 || number >= 10) {
-                currentNumber = currentNumber.substring(0, currentNumber.length - 1);
+            if (currentNumber !== "0") {
+                if ((!currentNumber.includes(".") && number > -10 && number < 10) || (currentNumber === "0.") || (currentNumber === "-0.")) {
+                    currentNumber = "0";
+                } else {
+                    currentNumber = currentNumber.substring(0, currentNumber.length - 1);
+                }
+                updateDisplay(currentNumber);
             }
-            updateDisplay(currentNumber);
+            break;
+        case ".":
+            if (currentNumber.length < DIGIT_LIMIT - 1 && !currentNumber.includes(".")) {
+                currentNumber += ".";
+                updateDisplay(currentNumber);
+            }
+            break;
+        case "+/-":
+            if (currentNumber !== "0") {
+                if (currentNumber.includes("-")) {
+                    currentNumber = currentNumber.substring(1, currentNumber.length);
+                } else {
+                    currentNumber = "-" + currentNumber;
+                }
+                updateDisplay(currentNumber);
+            }
             break;
         case "=":
+            console.log("=");
             if (currentOperator !== "" ) {
                 currentNumber = performOperation();
                 savedNumber = "0";
@@ -100,7 +119,7 @@ function handleSymbol(symbol) {
 }
 
 function handleOperator(operator) {
-    if (operator === "+" || operator === "-" || operator === "×" || operator === "÷") {
+    if (operator === "+" || operator === "-" || operator === "×" || operator === "÷" || operator === "%") {
         if (parseFloat(currentNumber) !== 0) {
             savedNumber = performOperation();
             currentNumber = "0";
@@ -131,6 +150,9 @@ function performOperation() {
             } else {
                 result = (parseFloat(savedNumber) / parseFloat(currentNumber)).toString();
             }
+            break;
+        case "%":
+            result = (parseFloat(savedNumber) % parseFloat(currentNumber)).toString();
             break;
         default:
             result = (parseFloat(savedNumber) + parseFloat(currentNumber)).toString();
@@ -187,3 +209,5 @@ function displayError(message) {
 //   -Dividing by 0 would cause the result to be infinity
 //   -The overflow error message would not display for full numbers that are too large to fit on the display
 //   -Hitting backspace or the back button on a decimal number would make it 0 instead of removing the last digit
+// Version 1.6
+// *Added a decimal button, modulus button, and toggle button for switching a number between positive/negative.
