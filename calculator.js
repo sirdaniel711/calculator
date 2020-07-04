@@ -1,4 +1,4 @@
-// JavaScript calculator version 1.6
+// JavaScript calculator version 1.7
 // By: sirdaniel711
 // Linked files: index.html, styles.css
 // To do:
@@ -161,11 +161,17 @@ function performOperation() {
 }
 
 function updateDisplay(numberToDisplay) {
-    if (numberToDisplay.length >= DIGIT_LIMIT) {
-        if (numberToDisplay.indexOf('.') >= DIGIT_LIMIT || numberToDisplay.includes('e') || !numberToDisplay.includes('.')) {
+    var currentDigitLimit;
+    if (numberToDisplay.includes('-')) {
+        currentDigitLimit = DIGIT_LIMIT + 1;
+    } else {
+        currentDigitLimit = DIGIT_LIMIT;
+    }
+    if (numberToDisplay.length > currentDigitLimit) {
+        if (numberToDisplay.indexOf('.') >= currentDigitLimit || numberToDisplay.includes('e') || !numberToDisplay.includes('.')) {
             displayError("Overflow");
         } else {
-            numberToDisplay = (parseFloat(numberToDisplay).toPrecision(DIGIT_LIMIT - 1)).toString();
+            numberToDisplay = (parseFloat(numberToDisplay).toPrecision(currentDigitLimit - 1)).toString();
             screen.innerText = numberToDisplay;
             if (currentOperator === "") {
                 currentNumber = numberToDisplay;
@@ -210,3 +216,6 @@ function displayError(message) {
 //   -Hitting backspace or the back button on a decimal number would make it 0 instead of removing the last digit
 // Version 1.6
 // *Added a decimal button, modulus button, and toggle button for switching a number between positive/negative.
+// Version 1.7
+// *Fixed a few errors where the backspace would not work properly.
+// *Updated the button layout.
