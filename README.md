@@ -1,4 +1,4 @@
-# JavaScript Calculator Project (version 1.6)
+# JavaScript Calculator Project (version 1.7)
 
 This is a JavaScript calculator project for the Frontend Masters course [Intro to Web Development](https://bthold.github.io/intro-to-web-dev-v2/).
 
@@ -10,6 +10,9 @@ This is a JavaScript calculator project for the Frontend Masters course [Intro t
 - Currently, the enter key on a keyboard is set to register as "=". However, if a button on the calculator is in focus, then this will also cause that button to trigger. Currently, the user needs to make sure none of the calculator's buttons are in focus before hitting the enter key. Need to look into this more.
 
 ## Updates:
+- Version 1.7
+    * Fixed a few errors where the backspace would not work properly 
+    * Updated the button layout
 - Version 1.6
     * Added a decimal button, modulus button, and toggle button for switching a number between positive/negative
 - Version 1.5
