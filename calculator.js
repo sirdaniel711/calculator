@@ -1,4 +1,4 @@
-// JavaScript calculator version 1.7
+// JavaScript calculator version 1.8
 // By: sirdaniel711
 // Linked files: index.html, styles.css
 // To do:
