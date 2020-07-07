@@ -1,15 +1,21 @@
-# JavaScript Calculator Project (version 1.7)
+# JavaScript Calculator Project (version 1.8)
 
 This is a JavaScript calculator project for the Frontend Masters course [Intro to Web Development](https://bthold.github.io/intro-to-web-dev-v2/).
 
 **[Try the calculator here](https://sirdaniel711.github.io/calculator/)**
 
 ## To-Do List:
-- Add the ability for repeated "=" clicks to reapply the current operation
 - Add support for scientific/exponential notation, along with an exponential button
-- Currently, the enter key on a keyboard is set to register as "=". However, if a button on the calculator is in focus, then this will also cause that button to trigger. Currently, the user needs to make sure none of the calculator's buttons are in focus before hitting the enter key. Need to look into this more.
+- Improve some of the code efficiency
+- Add some shortcuts (for example, pressing "6" then "x" then "=" would register as 6 x 6 = 36) 
 
 ## Updates:
+- Version 1.8
+    * Added the ability for repeated "=" clicks to reapply the current operation
+    * Added a display for the approximate symbol "~" to show whenever a number is approximated to 15 digits due to screen space limitations
+    * Added a display for the number stored in memory
+    * Fixed an issue where small decimal numbers were not rounding correctly to 15 digits
+    * Fixed the issue with the buttons being in focus
 - Version 1.7
     * Fixed a few errors where the backspace would not work properly 
     * Updated the button layout
